@@ -1,0 +1,121 @@
+<html>
+<head>
+    <title>Transaction Analysis</title>
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+    <style>
+         table, th , td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 10px;
+            margin-left: auto;
+            margin-right: auto;
+
+         }
+         table tr:nth-child(odd) {
+            background-color: #f2f2f2;
+         }
+         table tr:nth-child(even) {
+            background-color: #ffffff;
+         }
+      </style>
+</head>
+
+<body>
+
+
+
+    <div id="header">
+        <div id="logo">
+            <div id="logo_text">
+                <!-- class="logo_colour", allows you to change the colour of the text -->
+                <h1><a href="index.html"><span class="logo_colour">Acme Financial</span></a></h1>
+                <h2>Transaction Analysis</h2>
+            </div>
+        </div>
+
+        <div id="menubar">
+            <ul id="menu">
+                <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+                <li class="selected"><a href="index.html">Transaction Analysis</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div  ng-app = "mainApp" ng-controller = "studentController">
+
+
+
+        <table>
+            <tr><td>Filter By:</td></tr>
+            <tr><td>Transactions</td><td><input ng-model="search.transactionReferenceNumber" /></td>
+
+            <td>Nested</td><td><input ng-model="search.nested" /></td></tr>
+            <tr><td>Rule1</td><td><input ng-model="search.rule1" /></td><td>Rule2</td><td><input ng-model="search.rule2" /></td></tr>
+
+        </table>
+
+    <table border = "1">
+
+
+            <tr><td>Transaction</td>
+        <td>Partition Date</td>
+        <td>Field52</td>
+                <td>Sender BIC</td>
+                <td>Intermediatary Bank</td>
+                <td>Beneficiary Bank</td>
+                <td>Nested</td>
+                <td>Rule1</td>
+                <td>Rule2</td>
+
+
+        </tr>
+
+        <tr ng-repeat="x in names | filter:search">
+
+            <td>{{x.transactionReferenceNumber}}</td>
+
+            <td>{{x.partitionDate}}</td>
+            <td>{{x.field52}}</td>
+            <td>{{x.senderBIC}}</td>
+            <td>{{x.intermediataryBank}}</td>
+            <td>{{x.beneficiaryBank}}</td>
+            <td>{{x.nested}}</td>
+            <td>{{x.rule1}}</td>
+            <td>{{x.rule2}}</td>
+
+        </tr>
+
+
+    </table>
+</div>
+
+
+<script>
+         var mainApp = angular.module("mainApp", []);
+
+         mainApp.controller('studentController', function($http, $scope) {
+
+
+
+         $http.get("http://localhost:8097/camel/records/transaction-analysis")
+                    .then(function (response) {
+
+                    $scope.names = response.data;
+
+                    })
+
+  })
+      </script>
+
+</body>
+</html>
